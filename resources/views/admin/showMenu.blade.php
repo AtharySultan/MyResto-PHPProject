@@ -27,11 +27,4 @@
         </div>
     @endforeach
 </div>
-
-
-
-
-
-
-
 @endsection

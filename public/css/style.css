@@ -90,57 +90,52 @@ a:focus {
 }
 
 /*header section*/
+/* General hero area styling */
 .hero_area {
   position: relative;
-  min-height: 100vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
+  width: 100%;
 }
 
+/* Background box styling */
 .bg-box {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;  
+  z-index: -1;
 }
 
 .bg-box img {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-     z-index: -1;  
+  object-fit: cover;
+  z-index: -1;
 }
 
+/* Index page: Full-screen background */
+.index-page .hero_area {
+  min-height: 100vh; /* Full viewport height for index page */
+}
+
+.index-page .bg-box {
+  height: 100%; /* Ensure the background covers the full hero_area */
+}
+
+/* Sub-pages: Background only for navbar */
 .sub_page .hero_area {
-  min-height: auto;
-  z-index: -1;  
+  min-height: auto; /* Allow hero_area to shrink to content (navbar) */
+  height: 80px; /* Adjust based on your navbar height */
 }
 
-.sub_page .hero_area .bg-box {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;  
+.sub_page .bg-box {
+  height: 80px; /* Match the navbar height */
 }
 
-.sub_page .hero_area .bg-box img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: right top;
-     object-position: right top;
-     z-index: -1;  
+.sub_page .bg-box img {
+  object-position: top; /* Show only the top part of the image */
 }
 
 .header_section {
@@ -1025,6 +1020,13 @@ body:not(.index-page) .hero_area .bg-box img {
   object-position: top;  /* تحديد مكان الصورة ليظهر الجزء العلوي */
 }
 
+
+@media (max-width: 768px) {
+  .sub_page .hero_area,
+  .sub_page .bg-box {
+    height: 60px; /* Adjust for smaller screens if navbar height changes */
+  }
+}
 
 
 

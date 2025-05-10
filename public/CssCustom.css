@@ -161,5 +161,30 @@
       max-width: 30%;
     }
   }
+
+  /* تنسيق أيقونة السلة */
+.cart-icon {
+  color: white; /* لون الأيقونة أبيض */
+  font-size: 1.5rem; /* حجم الأيقونة (يمكنك تعديله حسب الحاجة) */
+}
+
+/* تنسيق عداد السلة */
+.cart-count {
+  background-color: #ffc107; /* لون العداد أصفر */
+  color: #000; /* لون النص داخل العداد أسود للتباين */
+  font-size: 0.9rem; /* حجم النص داخل العداد */
+  width: 24px; /* عرض العداد */
+  height: 24px; /* ارتفاع العداد */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white; /* إطار أبيض لتحسين المظهر */
+  font-weight: bold;
+}
+
+/* إخفاء العداد إذا كان فارغًا */
+.cart-count:empty {
+  display: none;
+}
   
   

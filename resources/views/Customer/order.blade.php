@@ -45,28 +45,40 @@
 
       <div class="row">
         <div class="col">
-            <a href="#" onclick="submitOrder()" class="btn btn-lg btn-warning rounded-pill text-white checkout-btn" style="font-size: 1.2rem; text-decoration: none;">
-                عرض تفاصيل الطلب 
-                <i class="bi bi-arrow-left-circle-fill ms-2"></i>
-            </a>      
+        <a href="{{ route('Customer.checkOut') }}" class="btn btn-lg btn-warning rounded-pill text-white checkout-btn" style="font-size: 1.2rem; text-decoration: none;">
+    عرض تفاصيل الطلب 
+    <i class="bi bi-arrow-left-circle-fill ms-2"></i>
+</a>  
         </div>
       </div>
 
-      <form id="orderForm" method="POST" action="{{ route('Customer.placeOrder') }}">
-        @csrf
-        <input type="hidden" name="orderData" id="orderData">
-      </form>
+
 
 @endsection
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const menuCards = document.querySelectorAll('.menu-card');
-    const orderForm = document.getElementById('orderForm');
-    const orderDataInput = document.getElementById('orderData');
     const checkoutButton = document.querySelector('.checkout-btn');
+    const cartCount = document.querySelector('.cart-count');
 
-    const dishes = [];
+    // تحميل السلة من localStorage إذا وجدت
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // دالة لتحديث عداد السلة
+    const updateCartCount = () => {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+        cartCount.style.display = totalItems > 0 ? 'inline-block' : 'none';
+    };
+
+    // دالة لتحديث حالة زر التشيك أوت
+    const updateButtonVisibility = () => {
+        checkoutButton.style.display = cart.length > 0 ? 'inline-block' : 'none';
+    };
+
+    // تحديث العداد وزر التشيك أوت عند التحميل
+    updateCartCount();
+    updateButtonVisibility();
 
     menuCards.forEach(card => {
         const addIcon = card.querySelector('.add-icon');
@@ -75,59 +87,73 @@ document.addEventListener('DOMContentLoaded', function () {
         const plusBtn = card.querySelector('.plus-btn');
         const quantityCount = card.querySelector('.quantity-count');
 
-        const dishId = card.getAttribute('data-dish-id');  // تأكد أنك تضيف data-dish-id="{{ $dish->id }}" في الكارد
+        const dishId = card.getAttribute('data-dish-id');
         const dishName = card.querySelector('h3').textContent;
         const price = parseFloat(card.querySelector('.price').textContent);
 
-        let quantity = 1;
+        // تحقق إذا كان الطبق موجودًا في السلة لإظهار الكمية
+        const existingItem = cart.find(item => item.id === dishId);
+        if (existingItem) {
+            addIcon.classList.add('d-none');
+            quantitySelector.classList.remove('d-none');
+            quantityCount.textContent = existingItem.quantity;
+        }
+
+        let quantity = existingItem ? existingItem.quantity : 1;
 
         addIcon.addEventListener('click', () => {
-    addIcon.classList.add('d-none');
-    quantitySelector.classList.remove('d-none');
-    updateDish(dishId, quantity, price); // نضيف الطبق مباشرة بكمية 1
-});
+            addIcon.classList.add('d-none');
+            quantitySelector.classList.remove('d-none');
+            quantityCount.textContent = quantity;
+            updateCart(dishId, dishName, quantity, price);
+        });
 
         plusBtn.addEventListener('click', () => {
             quantity++;
             quantityCount.textContent = quantity;
-            updateDish(dishId, quantity, price);
+            updateCart(dishId, dishName, quantity, price);
         });
 
         minusBtn.addEventListener('click', () => {
             if (quantity > 1) {
                 quantity--;
                 quantityCount.textContent = quantity;
-                updateDish(dishId, quantity, price);
+                updateCart(dishId, dishName, quantity, price);
             } else {
                 quantitySelector.classList.add('d-none');
                 addIcon.classList.remove('d-none');
-                removeDish(dishId);
+                removeFromCart(dishId);
             }
         });
 
-        function updateDish(id, qty, unitPrice) {
-            const index = dishes.findIndex(item => item.id === id);
+        function updateCart(id, name, qty, unitPrice) {
+            const index = cart.findIndex(item => item.id === id);
             if (index > -1) {
-                dishes[index].quantity = qty;
+                cart[index].quantity = qty;
             } else {
-                dishes.push({ id, quantity: qty, unit_price: unitPrice });
+                cart.push({ id, name, quantity: qty, unit_price: unitPrice });
             }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateButtonVisibility();
         }
 
-        function removeDish(id) {
-            const index = dishes.findIndex(item => item.id === id);
-            if (index > -1) {
-                dishes.splice(index, 1);
-            }
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateButtonVisibility();
         }
     });
 
-    document.querySelector('.checkout-btn')?.addEventListener('click', () => {
-        orderDataInput.value = JSON.stringify(dishes);
-        orderForm.submit();
+    // تعديل زر التشيك أوت للانتقال إلى صفحة التشيك أوت
+    checkoutButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = "{{ route('Customer.checkOut') }}";
     });
 });
 </script>
+
 
 
 <style>

@@ -209,3 +209,7 @@ body {
   }
 }
 
+.custom-search {
+  margin-left: auto !important; /* إذا كان LTR */
+  /* أو استخدم margin-right للـ RTL */
+}

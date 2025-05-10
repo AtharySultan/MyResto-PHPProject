@@ -5,7 +5,7 @@
   <!-- about section -->
 
   <section class="about_section layout_padding">
-    <div class="container  ">
+    <div class="container   ">
 
       <div class="row">
         <div class="col-md-6 ">
@@ -14,20 +14,21 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="detail-box">
+          <div class="detail-box" dir="rtl" style="text-align: right;">
             <div class="heading_container">
               <h2>
-                مين احنا
+                من نحن
               </h2>
             </div>
             <p>
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-              in some form, by injected humour, or randomised words which don't look even slightly believable. If you
-              are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in
-              the middle of text. All
+            في قلب المدينة، أنشأنا مطعمنا لنقدم لكم تجربة مختلفة في عالم الوجبات السريعة. لا نقدم الطعام فقط،  
+            بل نمنحكم لحظات ممتعة في مكان أنيق يجمع بين الجودة، السرعة، والذوق الرفيع. نستخدم أجود المكونات،  
+            ونُعد وجباتنا بعناية لنضمن لكم نكهة لا تُنسى. سواء كنت تبحث عن وجبة سريعة بطابع فاخر،  
+            أو مكان مريح تقضي فيه وقتك، نحن هنا لنمنحك الأفضل دائمًا.
             </p>
+
             <a href="">
-              Read More
+              عرض المزيد
             </a>
           </div>
         </div>
